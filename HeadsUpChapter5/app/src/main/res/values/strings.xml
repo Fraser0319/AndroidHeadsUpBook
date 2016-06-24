@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">HeadsUpChapter5</string>
+    <string name="textView1">To</string>
+    <string name="textView3">this is a textview</string>
+    <string name="textView2">Enter your email address</string>
+    <string name="button1">Send</string>
+    <string name="message">Message</string>
+    <string name="TeaTempMessage">Thanks for choosing our awesome blend tea. How do you want it served ?</string>
+    <string name="Temperature">Temperature</string>
+    <string name="hot">Hot</string>
+    <string name="cold">Cold</string>
+    <string name="milk">Milk</string>
+    <string name="sugar">Sugar</string>
+    <string name="lemon">Lemon</string>
+</resources>
