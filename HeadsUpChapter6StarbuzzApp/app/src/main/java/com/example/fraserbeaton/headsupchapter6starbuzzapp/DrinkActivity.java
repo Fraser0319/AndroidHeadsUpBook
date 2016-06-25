@@ -13,17 +13,21 @@ public class DrinkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink);
-
+        
+        //Get the drink from the intent
         int drinkNo = (Integer) getIntent().getExtras().getInt(EXTRA_DRINKNO);
         Drink drink = Drink.drinks[drinkNo];
 
+        //Populate the drink image
         ImageView photo = (ImageView) findViewById(R.id.photo);
         photo.setImageResource(drink.getImageResourceId());
         photo.setContentDescription(drink.getName());
 
+        //Populate the drink name
         TextView name = (TextView)findViewById(R.id.name);
         name.setText(drink.getName());
 
+        //Populate the drink description
         TextView description = (TextView)findViewById(R.id.description);
         description.setText(drink.getDescription());
     }
