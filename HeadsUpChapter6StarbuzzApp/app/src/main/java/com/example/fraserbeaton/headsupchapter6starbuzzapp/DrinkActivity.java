@@ -13,7 +13,7 @@ public class DrinkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink);
-        
+
         //Get the drink from the intent
         int drinkNo = (Integer) getIntent().getExtras().getInt(EXTRA_DRINKNO);
         Drink drink = Drink.drinks[drinkNo];
