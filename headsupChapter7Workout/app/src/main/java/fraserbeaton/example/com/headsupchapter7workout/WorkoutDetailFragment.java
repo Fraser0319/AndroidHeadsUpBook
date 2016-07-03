@@ -26,22 +26,20 @@ public class WorkoutDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         if(savedInstanceState != null){
             workoutId = savedInstanceState.getLong("workoutId");
+        }else{
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            StopwatchFragment stopwatchFragment = new StopwatchFragment();
+            ft.replace(R.id.stopwatch_Container, stopwatchFragment);
+            ft.addToBackStack(null);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
         }
-
-        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        StopwatchFragment stopwatchFragment = new StopwatchFragment();
-        ft.replace(R.id.stopwatch_Container, stopwatchFragment);
-        ft.addToBackStack(null);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_workout_detail, container, false);
     }
