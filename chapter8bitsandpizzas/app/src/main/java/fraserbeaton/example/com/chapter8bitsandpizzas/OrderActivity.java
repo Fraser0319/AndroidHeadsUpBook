@@ -12,7 +12,7 @@ public class OrderActivity extends Activity {
         setContentView(R.layout.activity_order);
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        
+
     }
 
 }
