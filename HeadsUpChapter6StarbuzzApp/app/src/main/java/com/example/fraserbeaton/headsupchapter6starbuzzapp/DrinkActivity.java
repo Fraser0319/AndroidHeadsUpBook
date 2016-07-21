@@ -1,7 +1,11 @@
 package com.example.fraserbeaton.headsupchapter6starbuzzapp;
 
+import android.app.Activity;
+import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,7 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DrinkActivity extends AppCompatActivity {
+public class DrinkActivity extends Activity {
 
     public static final String EXTRA_DRINKNO = "drinkNo";
 
@@ -20,40 +24,64 @@ public class DrinkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drink);
 
         //Get the drink from the intent
-        int drinkNo = (Integer) getIntent().getExtras().getInt(EXTRA_DRINKNO);
-
+        int drinkNo = (Integer) getIntent().getExtras().get(EXTRA_DRINKNO);
 
 
         // create the cursor
-        try{
+        try {
             SQLiteOpenHelper starbuzzDatabaseHelper = new StarbuzzDatabaseHelper(this);
             SQLiteDatabase db = starbuzzDatabaseHelper.getReadableDatabase();
             Cursor cursor = db.query("DRINK",
-                                        new String[] {"NAME", "DESCRIPTION", "IMAGE_RESOURCE_ID"},
-                                        "_id = ?",
-                                        new String [] {Integer.toString(drinkNo)},
-                                        null,null,null);
+                    new String[]{"NAME", "DESCRIPTION", "IMAGE_RESOURCE_ID","FAVORITE"},
+                    "_id = ?",
+                    new String[]{Integer.toString(drinkNo)},
+                    null, null, null);
 
-            if(cursor.moveToFirst()){
+            if (cursor.moveToFirst()) {
                 // get the drink details from the the cursor
                 String nameText = cursor.getString(0);
                 String descriptionText = cursor.getString(1);
-                int photoid = cursor.getInt(2);
+                int photoId = cursor.getInt(2);
+                boolean isFavorite = (cursor.getInt(3) == 1);
 
-                TextView name = (TextView)findViewById(R.id.name);
+                TextView name = (TextView) findViewById(R.id.name);
                 name.setText(nameText);
 
-                TextView description = (TextView)findViewById(R.id.description);
+                TextView description = (TextView) findViewById(R.id.description);
                 description.setText(descriptionText);
 
                 ImageView photo = (ImageView) findViewById(R.id.photo);
-                photo.setImageResource(photoid);
+                photo.setImageResource(photoId);
                 photo.setContentDescription(nameText);
+
+                //Populate the favorite checkbox
+                CheckBox favorite = (CheckBox) findViewById(R.id.favorite);
+                favorite.setChecked(isFavorite);
             }
 
             cursor.close();
             db.close();
-        }catch (SQLiteException e){
+        } catch (SQLiteException e) {
+            Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+
+    //Update the database when the checkbox is clicked
+    public void onFavoriteClicked(View view) {
+        int drinkNo = (Integer) getIntent().getExtras().get("drinkNo");
+        CheckBox favorite = (CheckBox) findViewById(R.id.favorite);
+        ContentValues drinkValues = new ContentValues();
+        drinkValues.put("FAVORITE", favorite.isChecked());
+        SQLiteOpenHelper starbuzzDatabaseHelper =
+                new StarbuzzDatabaseHelper(DrinkActivity.this);
+        try {
+            SQLiteDatabase db = starbuzzDatabaseHelper.getWritableDatabase();
+            db.update("DRINK", drinkValues,
+                    "_id = ?", new String[]{Integer.toString(drinkNo)});
+            db.close();
+        } catch (SQLiteException e) {
             Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
             toast.show();
         }
