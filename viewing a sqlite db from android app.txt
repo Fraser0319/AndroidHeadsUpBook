@@ -1,0 +1,7 @@
+adb shell "run-as com.example.fraserbeaton.headsupchapter6starbuzzapp chmod -R 777 /data/data/com.example.fraserbeaton.headsupchapter6starbuzzapp/databases"
+adb shell "mkdir -p /sdcard/tempDB" 
+adb shell "cp -r /data/data/com.example.fraserbeaton.headsupchapter6starbuzzapp/databases/ /sdcard/tempDB/." // coppies contents of the databases folder to the tempdb folder
+adb pull sdcard/tempDB/ . adb shell "rm -r /sdcard/tempDB/*" // then pulls the databases to the project folder on the pc
+															// removes from the tempdb folder
+
+you can then take the database and use the sqlite manager on firefox to display the database.
